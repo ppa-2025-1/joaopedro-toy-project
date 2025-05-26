@@ -25,7 +25,6 @@ public abstract class BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
 
-    // soft delete
     private boolean deleted;
 
     public Integer getId() {

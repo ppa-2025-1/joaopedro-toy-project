@@ -13,13 +13,12 @@ public record NewCall(
         @NotBlank(message = "O objeto não pode ser vazio")
         String object,
 
-        String details, // Aqui não precisa de valor padrão, mas pode ser opcional
+        String details,
 
         @NotNull(message = "O ID do usuário é obrigatório")
         Integer userId
 
 ) {
-    // Para fornecer um valor padrão se details não for fornecido:
     public NewCall {
         if (details == null) {
             details = "";

@@ -29,7 +29,7 @@ public class Call extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @JsonIgnore // Adicionando a anotação para ignorar o campo user
+    @JsonIgnore
     private User user;
 
     public String getAction() {

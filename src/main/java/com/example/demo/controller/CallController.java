@@ -54,7 +54,6 @@ public class CallController extends AbstractController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // PATCH - Alterar a situação de um chamado
     @PatchMapping("/{id}/status")
     public ResponseEntity<String> alterarStatus(
             @PathVariable Integer id,

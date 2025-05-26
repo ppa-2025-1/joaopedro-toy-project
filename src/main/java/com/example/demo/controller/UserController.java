@@ -25,14 +25,6 @@ import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
-// fat model
-// fat controller (Anti-Pattern: o que não fazer)
-
-// thin controller e um fat model
-// controller deve ter apenas o essencial
-// para lidar com a requisição
-// as regras de negócio ficam no model (business, service, entidade)
-
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController extends AbstractController {
