@@ -11,7 +11,7 @@ import com.example.demo.model.entity.User;
 import com.example.demo.repository.CallRepository;
 import com.example.demo.repository.UserRepository;
 
-@Business
+@Component
 public class CallBusiness {
 
     private final CallRepository callRepository;
@@ -22,7 +22,7 @@ public class CallBusiness {
         this.userRepository = userRepository;
     }
 
-    public void abrirChamado(NewCall newCall) {
+    public Call abrirChamado(NewCall newCall) {
         User user = userRepository.findById(newCall.userId())
             .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
@@ -37,6 +37,8 @@ public class CallBusiness {
         call.setUpdatedAt(LocalDateTime.now());
 
         callRepository.save(call);
+
+        return call;
     }
 
     public void alterarStatus(Integer callId, CallStatus novoStatus) {

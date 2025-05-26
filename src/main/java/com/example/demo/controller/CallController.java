@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.demo.dto.CallResponse;
 import com.example.demo.dto.NewCall;
 import com.example.demo.model.business.CallBusiness;
 import com.example.demo.model.entity.Call;
@@ -28,31 +29,36 @@ public class CallController extends AbstractController {
     }
 
     // POST - Abrir um chamado (status = NOVO)
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void abrirChamado(@Valid @RequestBody NewCall newCall) {
-        callBusiness.abrirChamado(newCall);
+    public ResponseEntity<CallResponse> abrirChamado(@Valid @RequestBody NewCall newCall) {
+        Call createdCall = callBusiness.abrirChamado(newCall);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new CallResponse(createdCall));
     }
 
     // GET - Consultar todos os chamados
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Call>> listarChamados() {
-        return ResponseEntity.ok(callRepository.findAll());
+    public ResponseEntity<List<CallResponse>> listarChamados() {
+        List<CallResponse> chamados = callRepository.findAll()
+                .stream()
+                .map(CallResponse::new)
+                .toList();
+        return ResponseEntity.ok(chamados);
     }
 
     // GET - Consultar um chamado pelo ID
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Call> obterChamadoPorId(@PathVariable Integer id) {
+    public ResponseEntity<CallResponse> obterChamadoPorId(@PathVariable Integer id) {
         return callRepository.findById(id)
-                .map(ResponseEntity::ok)
+                .map(call -> ResponseEntity.ok(new CallResponse(call)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     // PATCH - Alterar a situação de um chamado
     @PatchMapping("/{id}/status")
     public ResponseEntity<String> alterarStatus(
-        @PathVariable Integer id,
-        @RequestParam CallStatus novoStatus) {
+            @PathVariable Integer id,
+            @RequestParam CallStatus novoStatus) {
 
         try {
             callBusiness.alterarStatus(id, novoStatus);

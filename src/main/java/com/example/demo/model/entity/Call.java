@@ -1,5 +1,6 @@
 package com.example.demo.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore; // Importe a anotação
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -28,6 +29,7 @@ public class Call extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore // Adicionando a anotação para ignorar o campo user
     private User user;
 
     public String getAction() {

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -25,17 +26,17 @@ public class UserBusiness {
     private final CallBusiness callBusiness;
 
     public UserBusiness(
-            UserRepository userRepository,
-            RoleRepository roleRepository,
-            @Value("${app.user.default.roles}") Set<String> defaultRoles,
-            CallBusiness callBusiness) {
+    UserRepository userRepository,
+    RoleRepository roleRepository,
+    @Value("${app.user.default.roles}") Set<String> defaultRoles,
+    @Lazy CallBusiness callBusiness) {
 
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
-        this.defaultRoles = defaultRoles;
-        this.callBusiness = callBusiness;
-    }
+    this.userRepository = userRepository;
+    this.roleRepository = roleRepository;
+    this.passwordEncoder = new BCryptPasswordEncoder();
+    this.defaultRoles = defaultRoles;
+    this.callBusiness = callBusiness;
+}
 
     public void criarUsuario(NewUser newUser) {
         if (!newUser.email().matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
